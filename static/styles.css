@@ -1,0 +1,311 @@
+/* --- Base Styles --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f8;
+    color: #003865;
+}
+
+/* --- Loading Screen Styles --- */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out, visibility 0.5s;
+}
+
+.loader-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loading-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    margin-bottom: 0px;
+}
+
+.loading-title {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+/* Container for the text animation */
+#dancing-text-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+}
+
+/* Individual letter styles */
+.letter {
+    display: inline-block;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #003865;
+    white-space: pre; /* Preserves spaces between words */
+
+    animation: jiggle 2s ease-in-out infinite;
+}
+
+/* The Jiggle Animation */
+@keyframes jiggle {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-3px) rotate(-4deg); }
+    50% { transform: translateY(0) rotate(0deg); }
+    75% { transform: translateY(-3px) rotate(4deg); }
+}
+
+/* Utility to hide elements smoothly */
+.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- App Content Styles --- */
+#app-content {
+    animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Header */
+.app-header {
+    background-color: #003865;
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.org-branding {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.org-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.org-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.app-title {
+    font-size: 1.4rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* Main View Container */
+.view-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.placeholder-content {
+    background: #ffffff;
+    border: 2px dashed #bdc3c7;
+    border-radius: 8px;
+    padding: 50px;
+    text-align: center;
+    color: #7f8c8d;
+    transition: opacity 0.4s ease, visibility 0.4s;
+}
+
+.placeholder-content.hidden,
+.chat-box.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* --- Chat Box Styles --- */
+/* --- Chat Box Styles (Message Bubble) --- */
+.chat-box {
+    max-width: 600px;
+    margin: 40px auto 40px auto; /* Increased bottom margin for the tail */
+    padding: 25px;
+    background: #ffffff;
+    /* More rounded corners for that bubble look */
+    border-radius: 24px; 
+    /* drop-shadow wraps around the entire shape, including the tail! */
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    text-align: center;
+    transition: opacity 0.4s ease, visibility 0.4s;
+    
+    /* Needed so we can attach the tail to it */
+    position: relative; 
+}
+
+/* Creating the message bubble tail */
+.chat-box::after {
+    content: '';
+    position: absolute;
+    /* Position the tail at the bottom right */
+    bottom: -15px; 
+    right: 40px; 
+    /* CSS trick to draw a triangle */
+    border-width: 15px 15px 0 0;
+    border-style: solid;
+    /* Matches the background of the box */
+    border-color: #ffffff transparent transparent transparent; 
+}
+
+.chat-box h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.chat-input-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+#chat-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+#send-btn {
+    padding: 12px 20px;
+    background-color: #003865;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+#send-btn:hover {
+    background-color: #2980b9;
+}
+
+/* --- Detailed Agent Eyes --- */
+.agent-eyes {
+    position: absolute;
+    top: 12px; /* Adjusted up slightly to accommodate the eyebrows */
+    left: 22px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.eye {
+    width: 26px; 
+    height: 14px; 
+    box-sizing: border-box;
+    flex-shrink: 0;
+    border-radius: 50%; 
+    border: 1.5px solid #2c3e50;
+    
+    background: radial-gradient(
+        circle at center,
+        #000000 0px,
+        #000000 2.5px,    /* Pupil */
+        #592C1C 3px,
+        #592C1C 6px,      /* Iris */
+        #ffffff 6.5px,
+        #ffffff 100%      /* Sclera */
+    );
+    
+    animation: blink 7s infinite;
+    overflow: hidden; 
+}
+
+/* Container grouping each eyebrow with its eye */
+.eye-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px; /* Gap between eyebrow and eye */
+}
+
+/* Eyebrow styling */
+.eyebrow {
+    width: 26px; /* Matches exact eye width */
+    height: 5px;
+    background-color: transparent;
+    border-top: 2.5px solid #2c3e50; /* Creates the eyebrow line */
+    border-radius: 50% 50% 0 0; /* Arches the line to curve with the eye */
+    box-sizing: border-box;
+}
+
+/* Subtle tilts for a friendly expression */
+.eyebrow.left {
+    transform: rotate(-3deg);
+}
+
+.eyebrow.right {
+    transform: rotate(3deg);
+}
+
+/* Updated Blinking Animation for new shape */
+@keyframes blink {
+    0%, 90%, 100% { 
+        transform: scaleY(1); 
+    }
+    95% { 
+        /* Squish down slightly further for a more natural look on the wide shape */
+        transform: scaleY(0.05); 
+    }
+}
+
+/* Colored Iris */
+.iris {
+    width: 10px;
+    height: 10px;
+    background-color: #592C1C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Stops the iris from collapsing */
+}
+
+/* Black Pupil */
+.pupil {
+    width: 4px;
+    height: 4px;
+    background-color: #000000; /* Pure black for clear visibility */
+    border-radius: 50%;
+    flex-shrink: 0; /* Forces the browser to render the 4px size */
+}

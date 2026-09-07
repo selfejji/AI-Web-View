@@ -25,7 +25,6 @@ Make sure you have the following installed:
 * Docker
 
 ### Installation
-
 1. **Clone the repository**
    ```bash
    git clone https://github.com/Camden-County-Schools/web-view.git

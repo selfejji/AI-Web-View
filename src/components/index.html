@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCST Web View</title>
+    <link rel="stylesheet" href="..\..\static\styles.css"> 
+</head>
+<body>
+    <div id="loading-screen">
+        <div class="loader-content">
+            <img src="..\..\static\assets\images\ccs-logo.png" alt="ccs-logo" class="loading-image">
+            <div id="dancing-text-container"></div>
+        </div>
+    </div>
+
+    <div id="app-content" class="hidden">
+        <header class="app-header">
+            <h2 class="app-title">CCST Web View</h2>
+            
+            <div class="org-branding">
+                <img src="..\..\static\assets\images\ccs-logo.png" alt="ccs-logo" class="org-icon">
+                <span class="org-name">Camden County Schools Technology</span>
+            </div>
+        </header>
+
+        <!-- Inside <div id="app-content">, right above <main class="view-container"> -->
+        <div id="chat-container" class="chat-box">
+            <div class="agent-eyes">
+                <div class="eye-wrapper">
+                    <div class="eyebrow left"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="eye-wrapper">
+                    <div class="eyebrow right"></div>
+                    <div class="eye"></div>
+                </div>
+            </div>
+            <h3>What can I help you with?</h3>
+            <div class="chat-input-wrapper">
+                <input type="text" id="chat-input" placeholder="E.g, Do all my work for me I'm tired" />
+                <button id="send-btn">Generate</button>
+            </div>
+        </div>
+
+        <main class="view-container">
+            <div class="placeholder-content">
+                <p>Waiting for AI content injection...💉</p>
+                <p>Talk to chat! 😀</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="..\..\config.js"></script>
+    <script src="..\..\static\scripts\load.js"></script>
+    <script src="..\..\static\scripts\chat-box.js"></script>
+</body>
+</html>
