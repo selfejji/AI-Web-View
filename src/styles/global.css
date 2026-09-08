@@ -1,0 +1,487 @@
+/*
+-- Owner: Sammy Elfejji
+-- Camden County Schools Technology
+--
+-- #--- CCST Web View ---#
+-- An AI centered microservice that empowers users to create 
+-- reports, graphs/charts, and basic calculators as an interfaceable web application.
+--
+-- Date: 09/07/2026
+*/
+
+
+/*--- GLOBAL STYLE SHEET ---*/
+
+
+/*---------------------------------
+*
+* App-container level global styles
+*
+---------------------------------*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f8;
+    color: #003865;
+}
+
+
+.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#app-container {
+  opacity: 0;
+  transition: opacity 0.15s ease-in;
+}
+
+#app-container.ready {
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.app-header {
+    background-color: #003865;
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    gap: 0.75rem; 
+    padding: 0.75rem 1.25rem;
+
+}
+
+
+.app-body {
+  display: flex;
+  min-height: calc(100vh - 75px); 
+}
+
+/*---------------------------------
+*
+* Sidebar and Nav styles
+*
+---------------------------------*/
+
+.sidebar-toggle-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 22px;
+  height: 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 0;
+  flex-shrink: 0;
+}
+
+.sidebar-toggle-btn .hamburger-bar {
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff; 
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.sidebar {
+  width: 125px; 
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+  background-color: #1e293b;
+}
+
+
+.sidebar.collapsed {
+  margin-left: -125px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 18px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-family: var(--font-family-rounded);
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+  width: 80%;
+}
+
+.sidebar-link:hover {
+  background-color: #2d3d57;
+  color: #f8fafc;
+  transform: translateX(4px);
+}
+
+
+.sidebar-link.active {
+  background-color: #0284c7;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+}
+
+/*---------------------------------
+*
+* Header elements styles
+*
+---------------------------------*/
+
+.org-branding {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.org-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.org-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.app-title {
+    font-size: 1.4rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+.header-brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start; 
+  margin-right: auto;      
+  min-height: 50px;
+}
+
+.brand-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  line-height: 1.1;
+}
+
+.page-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #38bdf8;
+  line-height: 1.2;
+  display: block;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.header-brand.animated .page-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*---------------------------------
+*
+* Placeholder-content and code 
+* injection styles (view-container) 
+*
+---------------------------------*/
+
+.main-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #f4f6f8;
+}
+
+.view-container {
+    padding: 30px;
+    margin: 0 auto;
+}
+
+.chat-box,
+.placeholder-content, 
+.view-container {
+  width: 100%;
+  max-width: 800px; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.placeholder-content {
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;     
+  text-align: center;
+  background: #ffffff;
+  border: 2px dashed #bdc3c7;
+  border-radius: 12px;
+  padding: 20px;
+  color: #7f8c8d;
+  transition: opacity 0.4s ease, visibility 0.4s;
+}
+
+.placeholder-content.hidden,
+.chat-box.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/*---------------------------------
+*
+* Chat-box styles 
+*
+---------------------------------*/
+
+
+.chat-box {
+    margin: 40px auto 40px auto; 
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 40px; 
+    border-style: solid;
+    border-color: #ffffff; 
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    text-align: center;
+    transition: opacity 0.4s ease, visibility 0.4s;
+    position: relative; 
+}
+
+.chat-box::after {
+    content: '';
+    position: absolute;
+    bottom: -35px; 
+    right: 40px; 
+    border-width: 50px 50px 0 0;
+    border-style: solid;
+    border-color: #ffffff transparent transparent transparent; 
+}
+
+.chat-box h3 {
+    margin-bottom: 15px;
+    color: #003865;
+}
+
+.chat-input-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+#chat-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+#send-btn {
+    padding: 12px 20px;
+    background-color: #003865;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+#send-btn:hover {
+    background-color: #2980b9;
+}
+
+/*---------------------------------
+*
+* Blinking eye styles -- (ARCHIVED)
+*
+---------------------------------
+
+.agent-eyes {
+    position: absolute;
+    top: 12px; 
+    left: 22px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.eye {
+    width: 20px; 
+    height: 12px; 
+    box-sizing: border-box;
+    flex-shrink: 0;
+    border-radius: 50%; 
+    border: 1px solid #2c3e50;
+    
+    background: radial-gradient(
+        circle at center,
+        #000000 0px,
+        #000000 2.5px,    
+        #592C1C 3px,
+        #592C1C 6px,     
+        #ffffff 6.5px,
+        #ffffff 100%      
+    );
+    
+    animation: blink 7s infinite;
+    overflow: hidden; 
+}
+
+.eye-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px; 
+}
+
+.eyebrow {
+    width: 22px; 
+    height: 5px;
+    background-color: transparent;
+    border-top: 2.5px solid #2c3e50; 
+    border-radius: 70%; 
+    box-sizing: border-box;
+}
+
+.eyebrow.left {
+    transform: rotate(-3deg);
+}
+
+.eyebrow.right {
+    transform: rotate(3deg);
+}
+
+@keyframes blink {
+    0%, 90%, 100% { 
+        transform: scaleY(1); 
+    }
+    95% { 
+        transform: scaleY(0.05); 
+    }
+}
+
+.iris {
+    width: 10px;
+    height: 10px;
+    background-color: #592C1C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; 
+}
+
+.pupil {
+    width: 4px;
+    height: 4px;
+    background-color: #000000; 
+    border-radius: 50%;
+    flex-shrink: 0; 
+}
+
+-----------------------------------*/
+
+/*---------------------------------
+*
+* Loading screen styles -- (ARCHIVED)
+*
+---------------------------------
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out, visibility 0.5s;
+}
+
+.loader-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loading-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    margin-bottom: 0px;
+}
+
+.loading-title {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+#dancing-text-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.letter {
+    display: inline-block;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #003865;
+    white-space: pre; 
+
+    animation: jiggle 2s ease-in-out infinite;
+}
+
+@keyframes jiggle {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-3px) rotate(-4deg); }
+    50% { transform: translateY(0) rotate(0deg); }
+    75% { transform: translateY(-3px) rotate(4deg); }
+}
+
+------------------------------------------------------*/

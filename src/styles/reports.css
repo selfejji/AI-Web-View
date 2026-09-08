@@ -1,0 +1,77 @@
+/*
+-- Owner: Sammy Elfejji
+-- Camden County Schools Technology
+--
+-- #--- CCST Web View ---#
+-- An AI centered microservice that empowers users to create 
+-- reports, graphs/charts, and basic calculators as an interfaceable web application.
+--
+-- Date: 09/07/2026
+*/
+
+
+
+/*---------------------------------
+*
+* Graph icon styles
+*
+---------------------------------*/
+
+/* Center the animation */
+.bar-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-end;
+  height: 60px; /* Max height of the bars */
+}
+
+.bar-chart {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end; /* Bars 'grow' from the bottom */
+}
+
+/* 2. Individual Bar Styling */
+.bar {
+  width: 20px;
+  height: 10px; /* Starting height */
+  border-radius: 4px;
+  /* Apply the animation defined below */
+  animation-name: grow-shrink;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-duration: 3s;
+}
+
+/* Apply specific settings to each bar */
+.bar.red {
+  background-color: #e74c3c;
+  animation-delay: 0s;
+}
+
+.bar.green {
+  background-color: #2ecc71;
+  animation-delay: 0.3s; /* Staggered start */
+}
+
+.bar.blue {
+  background-color: #3498db;
+  animation-delay: 0.6s; /* Latest start */
+}
+
+/* 3. The Animation Keyframes */
+@keyframes grow-shrink {
+  0%, 100% {
+    /* Starting and ending point: small */
+    height: 10px;
+    opacity: 0.7;
+  }
+  50% {
+    /* Mid-point peak size */
+    height: 30px;
+    opacity: 1;
+  }
+}
+
