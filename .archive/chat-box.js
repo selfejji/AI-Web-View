@@ -9,6 +9,9 @@
 -- Date: 09/07/2026
 */
 
+import { sendPrompt } from "../main.js";
+
+
 // Element definitions
 const chatContainer = document.getElementById('chat-container');
 const chatInput = document.getElementById('chat-input');
@@ -27,22 +30,10 @@ sendBtn.addEventListener('click', async () => {
 
     try {
         // Fetches the AI response from API
-        const response = await fetch(CONFIG.OPEN_WEBUI_URL, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${CONFIG.AGENT_API_KEY}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: "CCS AI",
-                messages: [{ role: 'user', content: prompt }]
-            })
-        });
-
-        // Creates AI response in both JSON and JS Object format
-        const data = await response.json();
-        const data_obj = JSON.parse(data);
+        const response = await sendPrompt;
         const codeRegex = /(function\s+\w+|.*?\s*=>|\b(const|let|var)\b|```[a-z]*\n|[\{\};])/g; // Regex definition for checkig if AI generated code
+
+        // REVIEW!!!!
 
         try {
             // Checks if the oresponse contains generated code

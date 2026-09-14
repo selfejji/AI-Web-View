@@ -1,4 +1,4 @@
 .env
-.archive
 .vscode
-README.md
+uv.lock
+.venv

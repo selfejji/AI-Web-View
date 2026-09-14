@@ -55,19 +55,6 @@ body {
     to { opacity: 1; }
 }
 
-.app-header {
-    background-color: #003865;
-    color: #ffffff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    gap: 0.75rem; 
-    padding: 0.75rem 1.25rem;
-
-}
-
-
 .app-body {
   display: flex;
   min-height: calc(100vh - 75px); 
@@ -89,7 +76,7 @@ body {
   border: none;
   cursor: pointer;
   padding: 0;
-  margin-right: 0;
+  margin-right: 12px; /* Spacing between hamburger icon and header-brand */
   flex-shrink: 0;
 }
 
@@ -154,9 +141,10 @@ body {
 ---------------------------------*/
 
 .org-branding {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+  margin-left: auto; /* Pushes this element all the way to the right edge */
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .org-icon {
@@ -177,13 +165,24 @@ body {
     opacity: 0.9;
 }
 
+.app-header {
+  position: relative; /* Keeps absolute elements contained inside */
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1.25rem;
+  background-color: #003865;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 60px; /* Ensures consistent vertical height */
+}
+
 .header-brand {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start; 
-  margin-right: auto;      
-  min-height: 50px;
+  flex-direction: column-reverse; /* Stacks agent-title ON TOP of brand-title */
+  align-items: flex-start;
+  gap: 3px;
 }
 
 .brand-title {
@@ -192,25 +191,47 @@ body {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #94a3b8;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
-.page-title {
+.agent-title {
+  display: block;
   font-size: 1.3rem;
   font-weight: 700;
+  line-height: 1.2;
   text-transform: uppercase;
   color: #38bdf8;
-  line-height: 1.2;
-  display: block;
   white-space: nowrap;
   opacity: 0;
   transform: translateY(4px);
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.header-brand.animated .page-title {
+/* Force hide header animation container unless active */
+.app-img.hidden {
+  display: none !important;
+}
+
+.app-header.animated .agent-title {
   opacity: 1;
   transform: translateY(0);
+}
+
+.title-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  
+  /* Fixes to ensure it displays correctly */
+  width: max-content; /* Prevents the text from wrapping/squishing */
+  z-index: 10;        /* Ensures it doesn't get hidden behind the left/right flex items */
+  margin: 0;          /* Removes any flex-margins that might throw off the centering */
+  
+  /* Keep your inner alignment */
+  display: flex;
+  justify-content: center; 
+  align-items: center;    
 }
 
 /*---------------------------------
@@ -262,6 +283,72 @@ body {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+}
+
+/*---------------------------------
+*
+* Bar styles 
+*
+---------------------------------*/
+
+/* Center the animation */
+.bar-container {
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar-chart {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end; /* Bars 'grow' from the bottom */
+  height: 30px;
+}
+
+/* 2. Individual Bar Styling */
+.bar {
+  width: 19px;
+  height: 30px; /* Starting height */
+  border-radius: 4px;
+  /* Apply the animation defined below */
+  animation-name: grow-shrink;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-duration: 2s;
+  transform-origin: bottom;
+}
+
+/* Apply specific settings to each bar */
+.bar.red {
+  background-color: #C81620;
+  animation-delay: 0.9s;
+}
+
+.bar.green {
+  background-color: #008F51;
+  animation-delay: 0.0s; /* Staggered start */
+}
+
+.bar.blue {
+  background-color: #0195D6;
+  animation-delay: 0.3s; /* Latest start */
+}
+
+.bar.yellow {
+  background-color: #F5A714;
+  animation-delay: 0.6s; /* Latest start */
+}
+
+/* 3. The Animation Keyframes */
+@keyframes grow-shrink {
+  0%, 100% {
+    transform: scaleY(0.33); /* Scales down to ~10px from the bottom */
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scaleY(1);    /* Full 30px height */
+    opacity: 1;
+  }
 }
 
 /*---------------------------------

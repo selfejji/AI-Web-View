@@ -1,5 +1,9 @@
 .env
 .archive
-.git
+.gitea
+.gitignore
 .vscode
 README.md
+CHANGELOG.md
+.env.example
+.ai-helper

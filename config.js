@@ -9,9 +9,9 @@
 -- Date: 09/07/2026
 */
 
-
 // defines configs for enviornment var references
 const CONFIG = {
-    OPEN_WEBUI_URL: '',
-    AGENT_API_KEY: ''
+    FASTAPI_URL: 'http://127.0.0.1:8000'
 };
+
+export default CONFIG;

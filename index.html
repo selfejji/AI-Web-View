@@ -22,7 +22,6 @@
     <!-- Sets the title of the page and imports the global and app level styles -->
     <title>CCST Web View</title>
     <link rel = "stylesheet" href = "./src/styles/global.css">
-    <link rel = "stylesheet" href = "./src/styles/reports.css">
 
     
     <!-- importmap is essential for importing the shared scripts and app scripts so their relative
@@ -30,8 +29,8 @@
     <script type = "importmap">
     {
       "imports": {
-        "shared/": "./src/modules/shared/",
-        "apps/": "./src/modules/apps/"
+        "modules/": "./src/modules/",
+        "ai-helper/": "./ai-helper/"
       }
     }
     </script>
@@ -39,15 +38,14 @@
 
     <!-- The main scripts for the app are imported here -->
     <script type = "module" src = "./config.js"></script>
-    <script type = "module" src = "./src/scripts/chat-box.js"></script>
-    <script type = "module" src = "./src/modules/home.js"></script>
+    <script type = "module" src = "./main.js"></script>
 </head>
 <body>
     <!-- The main div for the application that allows for universal styling --> 
     <div id = "app-container">
         
         <!-- The header is responsible for holding the navigation elements, the app name and icon, and the organization -->
-        <header class = "app-header">
+        <header class = "app-header" id = "appHeader">
             <!-- Hamburger Menu Button -->
             <button id = "sidebarToggle" class = "sidebar-toggle-btn" aria-label = "Toggle Navigation">
                 <span class = "hamburger-bar"></span>
@@ -57,22 +55,25 @@
 
             <!-- Contains the cureent page and the brand. -->
             <div class = "header-brand" id = "headerBrand">
-                <span class = "page-title" id = "pageTitle"></span>
-                <span class = "brand-title">CCST Web View</span>
+                <span class = "brand-title">CCS AI Web View</span>
+                <div class = "app-animated-img" id = "app-img">
+                    <div class = "bar-container">
+                        <div class = "bar-chart">
+                            <div class = "bar green"></div>
+                            <div class = "bar blue"></div>
+                            <div class = "bar yellow"></div>
+                            <div class = "bar red"></div>
+                        </div>
+                        <div class = "line"></div>
+                    </div>
+                </div>
             </div>
 
-            <div class = "bar-container">
-                <div class = "bar-chart">
-                    <div class = "bar red"></div>
-                    <div class = "bar green"></div>
-                    <div class = "bar blue"></div>
-                </div>
-                <div class = "line"></div>
-            </div>
-            
+            <span class = "agent-title" id = "agentTitle"></span>
+
             <!-- The orgs tag-->
             <div class = "org-branding">
-                <img src="./static/assets/images/ccs-logo.png" alt="ccs-logo" class = "org-icon">
+                <img src = "./src/assets/ccs-logo.png" alt = "ccs-logo" class = "org-icon">
                 <span class = "org-name">Camden County Schools Technology</span>
             </div>
         </header>
@@ -80,11 +81,17 @@
         <!-- Containes side bar and main content -->
         <!-- 2. Main Body Layout (Sidebar + Content) -->
         <div class = "app-body">
-            <aside class = "sidebar collapsed" id = "sidebar"></aside>
+            <aside class = "sidebar collapsed" id = "sidebar">
+                <nav>
+                    <a class = "sidebar-link active">
+                        <span class = "name">Agent</span>
+                    </a>
+                </nav>
+            </aside>
 
             <!-- Wrapper for the main content such as the chat and code injections -->
             <div class = "main-content-wrapper">
-                <div id = "chat-container" class = "chat-box">
+                <div class = "chat-box" id = "chat-container">
                     <h3>What can I help you with?</h3>
                     <div class = "chat-input-wrapper">
                         <input type = "text" id = "chat-input" placeholder = "E.g, Do all my work for me I'm tired" />
@@ -95,13 +102,12 @@
                 <!-- The main block for the code injections, placeholder hides when code is generated -->
                 <!-- Main dynamic content container -->
                 <main class = "view-container" id = "app">
-                    <div class = "placeholder-content">
-                        <h2> Waiting for AI content injection...💉 </h2>
-                    </div>
+                    <div class = "placeholder-content"></div>
+                    <div class = "content"></div>
                 </main>
             </div>
         </div>
 
     </div>
 </body>
-</html>
+</html> 
