@@ -76,8 +76,8 @@ class Params(BaseModel):
 
             if target_type == "stream":
                 payload = {
-                    "model": self.model,
-                    "chat_id": self.chat_id,
+                    "id": self.model,
+                    "user_id": self.chat_id,
                     "stream": True,
                     "messages": [{"role": "user", "content": self.usrPrompt}],
                     "tool_ids": self.tool_ids,
@@ -122,7 +122,7 @@ async def get_custom_agents():
                 
             payload = response.json().get("data", [])
 
-#            Filter the "data" array inside the payload, retaining all outer metadata
+            # Filter the "data" array inside the payload, retaining all outer metadata
             payload["data"] = [
                 model for model in payload.get("data", [])
                 if TAG in [

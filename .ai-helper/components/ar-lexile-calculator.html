@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AR Reading Goal Calculator</title>
+
+    <style>
+
+        body {
+
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+            background-color: #f4f6f9;
+
+            color: #333;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            min-height: 100vh;
+
+            margin: 0;
+
+            padding: 20px;
+
+        }
+
+        .calculator-card {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+            width: 100%;
+
+            max-width: 450px;
+
+            position: relative;
+
+        }
+
+        .ccs-logo {
+
+            position: absolute;
+            top: 20px;
+            right: 430px;
+            width: 50px; /* Adjust size to fit your design */
+            height: auto;
+
+        }
+
+
+        /* Anchor the logo to the top right */
+        .calculator-logo {
+
+            position: absolute;
+            top: 12px;
+            right: 30px;
+            width: 75px; /* Adjust size to fit your design */
+            height: auto;
+
+        }
+
+        h2 {
+
+            margin-top: 0;
+
+            color: #1a73e8;
+
+            text-align: center;
+
+        }
+
+        .input-group {
+
+            margin-bottom: 20px;
+
+        }
+
+        label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: 600;
+
+            font-size: 0.95rem;
+
+        }
+
+        input, select {
+
+            width: 100%;
+
+            padding: 10px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 6px;
+
+            font-size: 1rem;
+
+            box-sizing: border-box;
+
+        }
+
+        .results {
+
+            background-color: #e8f0fe;
+
+            padding: 20px;
+
+            border-radius: 8px;
+
+            margin-top: 25px;
+
+        }
+
+        .results h3 {
+
+            margin-top: 0;
+
+            color: #1967d2;
+
+            border-bottom: 2px solid #d2e3fc;
+
+            padding-bottom: 8px;
+
+        }
+
+        .result-item {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 12px;
+
+            font-size: 1.05rem;
+
+        }
+
+        .result-item:last-child {
+
+            margin-bottom: 0;
+
+        }
+
+        .highlight {
+
+            font-weight: bold;
+
+            color: #1a73e8;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+ 
+
+<div class="calculator-card">
+
+    <img src="../../src/assets/ccsai.png" alt="Logo" class="calculator-logo">
+
+    <h2>AR Goal Calculator</h2>
+
+   
+
+    <div class="input-group">
+
+        <label for="lexile">Lexile Measure</label>
+
+        <input type="number" id="lexile" value="650" min="0" max="2000">
+
+    </div>
+
+ 
+
+    <div class="input-group">
+
+        <label for="minutes">Reading Minutes Per Day</label>
+
+        <input type="number" id="minutes" value="20" min="1" max="180">
+
+    </div>
+
+ 
+
+    <div class="input-group">
+
+        <label for="weeks">Grading Period Length (Weeks)</label>
+
+        <input type="number" id="weeks" value="9" min="1" max="52">
+
+    </div>
+
+ 
+
+    <div class="results">
+
+        <h3>Your Targets</h3>
+
+        <div class="result-item">
+
+            <span>Estimated Reading Speed:</span>
+
+            <span id="wpm-display" class="highlight">130 WPM</span>
+
+        </div>
+
+        <div class="result-item">
+
+            <span>Daily Pages Target:</span>
+
+            <span id="daily-pages" class="highlight">10 pages</span>
+
+        </div>
+
+        <div class="result-item">
+
+            <span>Total Word Goal:</span>
+
+            <span id="total-words" class="highlight">163,800</span>
+
+        </div>
+
+        <div class="result-item" style="font-size: 1.2rem; margin-top: 15px; pt: 10px; border-top: 1px dashed #b4d3ff;">
+
+            <strong>Total AR Points:</strong>
+
+            <strong id="total-points" style="color: #d93025;">32.8</strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+ 
+
+<script>
+
+    const lexileInput = document.getElementById('lexile');
+
+    const minutesInput = document.getElementById('minutes');
+
+    const weeksInput = document.getElementById('weeks');
+
+ 
+
+    const wpmDisplay = document.getElementById('wpm-display');
+
+    const dailyPagesDisplay = document.getElementById('daily-pages');
+
+    const totalWordsDisplay = document.getElementById('total-words');
+
+    const totalPointsDisplay = document.getElementById('total-points');
+
+ 
+
+    function calculateWPM(lexile) {
+
+        // Standard baseline map for Lexile to approximate WPM ranges
+
+        if (lexile <= 200) return 90;
+
+        if (lexile <= 400) return 110;
+
+        if (lexile <= 600) return 125;
+
+        if (lexile <= 800) return 140;
+
+        if (lexile <= 1000) return 160;
+
+        return 180; // High vocabulary dense capacity caps out around here for student target tracking
+
+    }
+
+ 
+
+    function calculateGoals() {
+
+        const lexile = parseInt(lexileInput.value) || 0;
+
+        const minutes = parseInt(minutesInput.value) || 0;
+
+        const weeks = parseInt(weeksInput.value) || 0;
+
+ 
+
+        // Calculations
+
+        const wpm = calculateWPM(lexile);
+
+        const dailyWords = wpm * minutes;
+
+        const dailyPages = Math.round(dailyWords / 250);
+
+       
+
+        const totalDays = weeks * 7;
+
+        const totalWords = dailyWords * totalDays;
+
+       
+
+        // Standard AR Formula: 1 Point per 5,000 words
+
+        const totalPoints = (totalWords / 5000).toFixed(1);
+
+ 
+
+        // Update UI
+
+        wpmDisplay.textContent = `${wpm} WPM`;
+
+        dailyPagesDisplay.textContent = `${dailyPages} pages`;
+
+        totalWordsDisplay.textContent = totalWords.toLocaleString();
+
+        totalPointsDisplay.textContent = totalPoints;
+
+    }
+
+ 
+
+    // Event listeners to update live as the user types or clicks
+
+    lexileInput.addEventListener('input', calculateGoals);
+
+    minutesInput.addEventListener('input', calculateGoals);
+
+    weeksInput.addEventListener('input', calculateGoals);
+
+ 
+
+    // Initial run on load
+
+    calculateGoals();
+
+</script>
+
+ 
+
+</body>
+
+</html>

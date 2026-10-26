@@ -17,7 +17,7 @@ import CONFIG from './config.js';
 export async function getAgents(){
   try {
     
-    const response = await fetch('ai-helper/models.json');
+    const response = await fetch('.ai-helper/models.json');
 
     if (!response.ok){
       throw new Error(`HTTP status: ${response.status}`);
@@ -38,7 +38,7 @@ export async function sendPrompt(message, chat_id, session_id){
   try {
     const payload = await fetch(CONFIG.FASTAPI_URL + "/api/chat/completions", {
       method: "POST",
-      body: JSON.stringify(message)
+      body: JSON.stringify(message, chat_id, session_id)
     });
 
     if (!payload.ok) {
