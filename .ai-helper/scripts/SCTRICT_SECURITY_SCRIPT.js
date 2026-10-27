@@ -59,7 +59,8 @@
     new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             mutation.addedNodes.forEach(function(node) {  
-                if (node.nodeType === 1) sanitizeLinks(node); 
+                if (node.nodeType === 1) 
+                    sanitizeLinks(node); 
             });
         });
     }).observe(document.body, { childList: true, subtree: true });

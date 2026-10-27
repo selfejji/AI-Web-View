@@ -2,12 +2,13 @@
 title: Staff Visualization Tool
 author: Sammy Elfejji 
 email: selfejji@camden.k12.ga.us
-version: 0.1.0
-required_open_webui_version: 0.10.2
+version: v0.1.0
+required_open_webui_version: v0.10.2
 description: Renders interactive HTML visualizations inline in chat.
 disclaimer: All Scripts and CSS blocks commented-out can be found in ../ai-helper/..
 """
 
+from builtins import RuntimeError
 import html
 from typing import Literal
 from fastapi.responses import HTMLResponse
@@ -294,7 +295,7 @@ def _build_csp_tag(level: str) -> str:
         )
 
 def _build_html(
-    security_level: str = "strict",
+    security_level: str = "offline",
     title: str = "Visualization",
     chime: bool = True,
 ) -> str:
@@ -365,5 +366,17 @@ class Tools:
     it is required for interactive visualizations. See the developer reference above
     for the full security model and its limitations.
     """
+
+    class Valves(BAseModel):
+        security_level: Literal["offline"] = Field(
+            default = "offline",
+            description = "Servers as the most strict security level with no external web requests, assets, or CDNs.",
+        )
+
+        chime: bool = Field(
+            default = True,
+            description = "Play a soft three-note chime when a live-streamed visualization finishes. When off, the chime script is omitted from the iframe entirely (not shipped as a no-op).",
+        )
+
     def __init__(self):
-        pass
+        self.valves = self.Valves()
