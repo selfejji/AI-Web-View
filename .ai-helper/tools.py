@@ -8,19 +8,15 @@ description: Renders interactive HTML visualizations inline in chat.
 disclaimer: All Scripts and CSS blocks commented-out can be found in ../ai-helper/..
 """
 
-
-import re
-import asyncio
 import html
 from typing import Literal
+from fastapi.responses import HTMLResponse
+from pydantic import BaseModel, Field
 
 # Build marker embedded into the rendered iframe so the running
 # version can be verified at runtime.
 # (search `data-iv-build` on <html>).  
 _IV_BUILD = "0.1.0"
-
-from fastapi.responses import HTMLResponse
-from pydantic import BaseModel, Field
 
 # ---------------------------------------------------------------------------
 # Injected CSS — Theme variables (light default, dark via data-theme)
@@ -193,9 +189,6 @@ STRICT_SECURITY_SCRIPT = """
 })();
 """
 
-STREAMING_OBSERVER_SCRIPT = """
-"""
-
 # ---------------------------------------------------------------------------
 # srcdoc safety guard
 #
@@ -271,16 +264,12 @@ _IFRAME_EMBEDDED_SCRIPTS = {
     "BODY_SCRIPTS": BODY_SCRIPTS,
     "CHIME_SCRIPT": CHIME_SCRIPT,
     "STRICT_SECURITY_SCRIPT": STRICT_SECURITY_SCRIPT,
-    "STREAMING_OBSERVER_SCRIPT": STREAMING_OBSERVER_SCRIPT,
 }
 
 # Runs srcdoc safety for each script
 for _name, _body in _IFRAME_EMBEDDED_SCRIPTS.items():
     _assert_srcdoc_safe(_name, _body)
 
-DOWNLOAD_BUTTON = (
-
-)
 
 def _build_csp_tag(level: str) -> str:
     # Return a <meta> CSP tag for the given security level, or empty string.
@@ -339,9 +328,7 @@ def _build_html(
         '<div class="iv-loading-dots"><span></span><span></span><span></span></div>'
         '<div class="iv-loading-label">Rendering visualization\u2026</div>'
         "</div>\n"
-        f"{DOWNLOAD_BUTTON}\n"
         f"{body_scripts}"
-        f"{STREAMING_OBSERVER_SCRIPT}"
         f"{strict_script}"
     )
 
@@ -366,7 +353,7 @@ def _build_html(
 #              'self' is only allowed. External scripts, images, fonts
 #              and media are all blocked; only same-origin, data: and
 #              blob: sources load. For air-gapped / privacy-hardened
-#              deployments. 
+#              deployments. (You are welcome Timothy lol)
 
 class Tools:
     """Inline Visualizer — renders interactive HTML in chat.
@@ -380,44 +367,3 @@ class Tools:
     """
     def __init__(self):
         pass
-
-    # Add your custom tools using pure Python code here, make sure to add type hints and descriptions
-
-    async def hello_world(self, __event_emitter__ = None) -> str:
-        """
-        HTML code for a test webpage.
-        """
-
-        # Do not include a descrption for __user__ as it should not be shown in the tool's specification
-        # The session user object will be passed as a parameter when the function is called
-
-        result = """<!DOCTYPE html>
-        <html>
-            <head>
-                <title>Hello World</title>
-                <style>
-                    body {
-                        text-align: center;
-                        margin-top: 20%;
-                        font-family: Arial, sans-serif;
-                    }
-                    h1 {
-                        font-size: 3em;
-                        color: #333;
-                    }
-                </style>
-            </head>
-                <body>
-                    <h1>Hello, World!</h1>
-                </body>
-            </html"""
-        # Direct push to chat stream to force the Artifact panel to open
-        if __event_emitter__:
-            await __event_emitter__(
-                {
-                    "type": "message",
-                    "data": {"content": f"\n\n```html\n{result}\n```\n\n"},
-                }
-            )
-
-        return "The workflow calculator HTML has been displayed to the user."
